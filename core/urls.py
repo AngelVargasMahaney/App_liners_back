@@ -47,6 +47,8 @@ urlpatterns = [
     path("api/register-details/<int:pk>", RegisterDetailAPIView.as_view()),
     
     path("api/projects-available", ProjectsByEquipoAPIView.as_view()),
+    path("api/pistolas-torque", PistolasTorqueAPIView.as_view()),
+    path("api/pistolas-torque/<int:pk>", PistolasTorqueAPIView.as_view()),
     path("api/activities-by-project", ActivitiesByProjectAPIView.as_view()),
     path("api/register-heads-by-project-eq", RegisterHeadByProjectAPIView.as_view()),
     

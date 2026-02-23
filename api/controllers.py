@@ -12,7 +12,8 @@ from .models import (
     Activity,
     Equipment,
     Ubication,
-    Job
+    Job,
+    PistolaTorque
 )
 
 from .serializers import (
@@ -23,7 +24,8 @@ from .serializers import (
     RegisterFilesSerializer,
     RegisterDetailSerializer,
     UbicationSerializer,
-    JobSerializer
+    JobSerializer,
+    PistolasSerializer
 )
 
 class BaseAPIView(APIView):
@@ -137,6 +139,11 @@ class RegisterDetailAPIView(BaseAPIView):
 class EquipmentAPIView(BaseAPIView):
     model = Equipment
     serializer_class = EquipmentSerializer
+    soft_delete = True
+    
+class PistolasTorqueAPIView(BaseAPIView):
+    model = PistolaTorque
+    serializer_class = PistolasSerializer
     soft_delete = True
     
 class ProjectsByEquipoAPIView(APIView):

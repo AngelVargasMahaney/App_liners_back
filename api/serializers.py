@@ -81,3 +81,9 @@ class EquipmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Equipment
         fields = "__all__"
+        
+class PistolasSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = PistolaTorque
+        fields = "__all__"
