@@ -232,7 +232,7 @@ class RegisterHeadByProjectAPIView(APIView):
 
         heads = (
             RegisterHead.objects
-            .filter(**filters)
+            .filter(**filters, deleted=False)
             .order_by("-initial_date")
         )
 
