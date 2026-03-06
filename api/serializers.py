@@ -87,3 +87,21 @@ class PistolasSerializer(serializers.ModelSerializer):
     class Meta:
         model = PistolaTorque
         fields = "__all__"
+        
+
+class PistolaTorqueHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PistolaTorque.history.model
+        fields = "__all__"
+        
+class PernosVerifSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = PernosVerif
+        fields = "__all__"
+        
+
+class PernosVerifHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PernosVerif.history.model
+        fields = "__all__"

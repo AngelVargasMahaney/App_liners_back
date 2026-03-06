@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
+from simple_history.models import HistoricalRecords
 
 # Create your models here.
 
@@ -218,3 +219,22 @@ class PistolaTorque(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
+    history = HistoricalRecords()
+    
+    
+class PernosVerif(models.Model):
+    equipo = models.ForeignKey(Entity, on_delete=models.CASCADE)
+    ubicacion = models.ForeignKey(Ubication, on_delete=models.CASCADE)
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    color = models.CharField(max_length=150)
+    total_campo = models.IntegerField()
+    no_cumple_dimens = models.IntegerField()
+    presenta_oxido = models.IntegerField()
+    hilo_daniado = models.IntegerField()
+    tuerca_daniada = models.IntegerField()
+    pernos_operativ_total = models.IntegerField()
+    deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    history = HistoricalRecords()

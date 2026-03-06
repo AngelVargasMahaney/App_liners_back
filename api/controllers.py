@@ -13,7 +13,8 @@ from .models import (
     Equipment,
     Ubication,
     Job,
-    PistolaTorque
+    PistolaTorque,
+    PernosVerif
 )
 
 from .serializers import (
@@ -25,7 +26,10 @@ from .serializers import (
     RegisterDetailSerializer,
     UbicationSerializer,
     JobSerializer,
-    PistolasSerializer
+    PistolasSerializer,
+    PistolaTorqueHistorySerializer,
+    PernosVerifSerializer,
+    PernosVerifHistorySerializer
 )
 
 class BaseAPIView(APIView):
@@ -146,6 +150,79 @@ class PistolasTorqueAPIView(BaseAPIView):
     serializer_class = PistolasSerializer
     soft_delete = True
     
+class PernosVerifAPIView(BaseAPIView):
+    model = PernosVerif
+    serializer_class = PistolasSerializer
+    soft_delete = True
+    
+class PistolasTorqueWithHistoryAPIView(APIView):
+    permission_classes = []
+    def get(self, request, pk=None):
+        if pk:
+            pistola = get_object_or_404(PistolaTorque, pk=pk, deleted=False)
+            serializer = PistolasSerializer(pistola)
+            
+            history = pistola.history.all().order_by('history_date')
+            history_serializer = PistolaTorqueHistorySerializer(history, many=True)
+            
+            return Response({
+                "status": "Success",
+                "data": serializer.data,
+                "history": history_serializer.data
+            })
+            
+    def put(self, request, pk):
+        obj = get_object_or_404(PistolaTorque, pk=pk)
+        serializer = PistolasSerializer(obj, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"status": "Success", "data": serializer.data})
+        return Response({"status": "Failed", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def delete(self, request, pk):
+        obj = get_object_or_404(PistolaTorque, pk=pk)
+        if self.soft_delete:
+            obj.deleted = True
+            obj.deleted_at = timezone.now()
+            obj.save()
+        else:
+            obj.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class PernosVerifWithHistoryAPIView(APIView):
+    permission_classes = []
+    def get(self, request, pk=None):
+        if pk:
+            pernosVerif = get_object_or_404(PernosVerif, pk=pk, deleted=False)
+            serializer = PernosVerifSerializer(pernosVerif)
+            
+            history = pernosVerif.history.all().order_by('history_date')
+            history_serializer = PistolaTorqueHistorySerializer(history, many=True)
+            
+            return Response({
+                "status": "Success",
+                "data": serializer.data,
+                "history": history_serializer.data
+            })
+            
+    def put(self, request, pk):
+        obj = get_object_or_404(PernosVerif, pk=pk)
+        serializer = PistolasSerializer(obj, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"status": "Success", "data": serializer.data})
+        return Response({"status": "Failed", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def delete(self, request, pk):
+        obj = get_object_or_404(PernosVerif, pk=pk)
+        if self.soft_delete:
+            obj.deleted = True
+            obj.deleted_at = timezone.now()
+            obj.save()
+        else:
+            obj.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 class ProjectsByEquipoAPIView(APIView):
     permission_classes = []
 
